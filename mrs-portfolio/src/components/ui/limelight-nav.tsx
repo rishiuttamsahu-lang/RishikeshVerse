@@ -3,7 +3,7 @@ import React, { useState, useRef, useLayoutEffect, cloneElement } from 'react';
 
 type NavItem = {
   id: string | number;
-  icon: React.ReactElement;
+  icon: React.ReactElement<any>;
   label?: string;
   onClick?: () => void;
   href?: string;
@@ -69,7 +69,7 @@ export const LimelightNav = ({
             {cloneElement(icon as any, {
               className: `w-4 h-4 transition-all duration-300 ease-in-out ${
                 activeIndex === index ? 'opacity-100 text-white' : 'opacity-50 text-zinc-400 hover:opacity-80'
-              } ${icon.props.className || ''} ${iconClassName || ''}`,
+              } ${(icon as any).props?.className || ''} ${iconClassName || ''}`,
             })}
             {label && (
               <span className={`text-sm font-medium transition-all duration-300 ${
