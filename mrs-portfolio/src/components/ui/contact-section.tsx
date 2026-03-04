@@ -64,47 +64,90 @@ export function ContactSection() {
           >
             <GlowCard customSize={true} glowColor="cyan" className="p-8 w-full h-full bg-black/40 flex flex-col justify-center">
               <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Your Name</label>
-                <div className="relative">
-                  <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                  <input
-                    type="text"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full pl-12 pr-4 py-3 bg-black/40 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/50 focus:ring-2 focus:ring-purple-500/20 transition"
-                    placeholder="John Doe"
-                    required
-                  />
-                </div>
-              </div>
+                {/* 🚀 NEUMORPHIC INPUTS START 🚀 */}
+                <style dangerouslySetInnerHTML={{ __html: `
+                  .uiverse-container {
+                    display: flex;
+                    background: linear-gradient(173deg, #23272f 0%, #14161a 100%);
+                    border-radius: 1rem;
+                    box-shadow: 8px 8px 16px #0e1013, -8px -8px 20px #383e4b;
+                    padding: 0.3rem;
+                    gap: 0.3rem;
+                    position: relative;
+                    width: 100%;
+                  }
 
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Your Email</label>
-                <div className="relative">
-                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                  <input
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full pl-12 pr-4 py-3 bg-black/40 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/50 focus:ring-2 focus:ring-purple-500/20 transition"
-                    placeholder="john@example.com"
-                    required
-                  />
-                </div>
-              </div>
+                  .uiverse-input {
+                    border-radius: 0.8rem;
+                    background: #23272f;
+                    box-shadow: inset 5px 5px 10px #0e1013, inset -5px -5px 10px #383e4b;
+                    width: 100%;
+                    padding: 1rem 1rem 1rem 3.2rem;
+                    border: 1px solid transparent;
+                    color: white;
+                    transition: all 0.2s ease-in-out;
+                    outline: none;
+                  }
 
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Your Message</label>
-                <textarea
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  rows={5}
-                  className="w-full px-4 py-3 bg-black/40 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/50 focus:ring-2 focus:ring-purple-500/20 transition resize-none"
-                  placeholder="Tell me about your project..."
-                  required
-                />
-              </div>
+                  .uiverse-input:focus {
+                    border: 1px solid #ffee00;
+                    box-shadow: 
+                      inset 0px 0px 10px rgba(255, 102, 0, 0.5), 
+                      inset 0px 0px 10px rgba(255, 212, 59, 0.5), 
+                      0px 0px 60px rgba(255, 212, 59, 0.3);
+                  }
+
+                  .uiverse-textarea {
+                    padding-left: 1rem !important;
+                    min-height: 120px;
+                  }
+                `}} />
+
+                {/* Name Field */}
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-400 ml-2">Your Name</label>
+                  <div className="uiverse-container">
+                    <User className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500 z-10" size={18} />
+                    <input 
+                      type="text" 
+                      placeholder="Rishikesh Yadav" 
+                      className="uiverse-input"
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      required
+                    />
+                  </div>
+                </div>
+
+                {/* Email Field */}
+                <div className="space-y-2 mt-6">
+                  <label className="text-sm font-medium text-gray-400 ml-2">Email Address</label>
+                  <div className="uiverse-container">
+                    <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500 z-10" size={18} />
+                    <input 
+                      type="email" 
+                      placeholder="rishi@example.com" 
+                      className="uiverse-input"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      required
+                    />
+                  </div>
+                </div>
+
+                {/* Message Field */}
+                <div className="space-y-2 mt-6">
+                  <label className="text-sm font-medium text-gray-400 ml-2">Message</label>
+                  <div className="uiverse-container">
+                    <textarea 
+                      placeholder="Let's build something cool..." 
+                      className="uiverse-input uiverse-textarea resize-none"
+                      value={formData.message}
+                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                      required
+                    />
+                  </div>
+                </div>
 
               {/* 🚀 NEW SCI-FI CROSSHAIR BUTTON 🚀 */}
               <div className="relative w-full mt-8">

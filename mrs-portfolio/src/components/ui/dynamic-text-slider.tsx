@@ -28,7 +28,7 @@ export function ContactTitleSlider() {
   return (
     <div className="w-full flex flex-col items-center justify-center text-center font-sans relative z-20 mb-16">
       <div className="max-w-5xl">
-        <h2 className="font-black tracking-tighter text-5xl md:text-6xl text-white">
+        <h2  className="font-black tracking-tighter text-5xl md:text-6xl text-white">
           Let's Build
         </h2>
         
@@ -131,7 +131,7 @@ function OpenSourceSlider({ width: initialWidth, height = 75, handleSize = 28, o
       className="relative select-none transition-transform duration-300 ease-out"
       style={{ width, height, transform: `rotate(${dynamicRotation}deg)` }}
     >
-      <div className="absolute inset-0 rounded-2xl border border-purple-500 pointer-events-none shadow-[0_0_15px_rgba(158,0,255,0.3)] bg-zinc-950/50 backdrop-blur-sm" />
+      <div className="absolute inset-0 rounded-2xl border border-purple-500 pointer-events-none shadow-[0_0_15px_rgba(158,0,255,0.3)]" />
       {(["left", "right"]).map((handle) => {
         const x = handle === "left" ? left : right - handleSize;
         const scaleClass = draggingHandle === handle ? "scale-125" : "hover:scale-110";

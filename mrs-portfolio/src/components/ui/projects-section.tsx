@@ -7,9 +7,9 @@ import { ExternalLink, Github } from "lucide-react";
 
 const myProjects = [
   {
-    title: "FYCS Study Hub",
+    title: "BNN CS Study Hub",
     description: "A comprehensive platform for Computer Science students to access notes, practicals, and resources effortlessly.",
-    tech: ["Next.js", "Tailwind", "Firebase"],
+    tech: ["React.js", "Tailwind", "Firebase"],
     link: "https://fycs-study-hub.vercel.app/",
     github: "https://github.com/rishiuttamsahu-lang/FYCS-Study-Hub",
     color: "#ffffff"
