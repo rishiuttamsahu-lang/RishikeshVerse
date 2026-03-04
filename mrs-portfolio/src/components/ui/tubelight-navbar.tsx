@@ -32,7 +32,7 @@ export function NavBar({ items, className }: NavBarProps) {
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPosition = window.scrollY + window.innerHeight / 3;
+      const scrollPosition = window.scrollY + window.innerHeight / 2;
       const isAtBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 50;
 
       if (isAtBottom) {
@@ -42,13 +42,21 @@ export function NavBar({ items, className }: NavBarProps) {
 
       let currentActive = items[0].name;
       
+      // Find the section that's currently in view
       for (let i = items.length - 1; i >= 0; i--) {
         const item = items[i];
         if (item.url !== '#') {
           const el = document.querySelector(item.url) as HTMLElement;
-          if (el && el.offsetTop <= scrollPosition) {
-            currentActive = item.name;
-            break;
+          if (el) {
+            const rect = el.getBoundingClientRect();
+            const elementTop = rect.top + window.scrollY;
+            const elementHeight = rect.height;
+            
+            // Check if this element is at or above the scroll position
+            if (elementTop <= scrollPosition && elementTop + elementHeight > scrollPosition) {
+              currentActive = item.name;
+              break;
+            }
           }
         }
       }
@@ -79,7 +87,7 @@ export function NavBar({ items, className }: NavBarProps) {
   return (
     <div
       className={cn(
-        "fixed bottom-6 sm:bottom-auto sm:top-6 left-1/2 -translate-x-1/2 z-50 w-max h-fit pointer-events-auto",
+        "fixed bottom-6 sm:bottom-auto sm:top-6 left-1/2 -translate-x-1/2 z-[9999] w-max h-fit pointer-events-auto",
         className,
       )}
     >

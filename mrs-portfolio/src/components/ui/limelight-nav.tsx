@@ -131,7 +131,7 @@ export const LimelightNav = ({
   };
 
   return (
-    <nav className={`relative inline-flex items-center h-14 rounded-full bg-zinc-900/50 backdrop-blur-md border border-white/10 px-2 shadow-2xl ${className}`}>
+    <nav className={`relative z-[9999] inline-flex items-center h-14 rounded-full bg-zinc-900/50 backdrop-blur-md border border-white/10 px-2 shadow-2xl ${className}`}>
       {items.map(({ id, icon, label, onClick, href, url }, index) => {
         const targetUrl = href || url || '#';
         

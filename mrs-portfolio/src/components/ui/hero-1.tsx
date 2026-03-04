@@ -85,7 +85,7 @@ export function HeroLanding({
   }
 
   return (
-    <div className={`min-h-screen w-full overflow-hidden relative bg-black ${className || ''}`}>
+    <div className={`min-h-screen w-full overflow-hidden relative bg-black !z-[99999] ${className || ''}`}>
       
       {/* Background Layer */}
       <div className="absolute inset-0 z-0 pointer-events-none">
@@ -121,7 +121,7 @@ export function HeroLanding({
       {/* Foreground Content Layer */}
       <div className="relative z-10 flex flex-col min-h-screen text-white">
         {/* Header */}
-        <header className="container mx-auto px-4 py-6 absolute top-0 left-0 w-full z-50 pointer-events-none">
+        <header className="container mx-auto px-4 py-6 absolute top-0 left-0 w-full !z-[99999] pointer-events-none">
           <nav className="flex items-center justify-between">
             {/* Logo */}
             <div className="text-2xl font-bold pointer-events-auto">Logo</div>

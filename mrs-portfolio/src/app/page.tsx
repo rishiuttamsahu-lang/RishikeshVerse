@@ -3,6 +3,7 @@ import { HeroLanding } from '@/components/ui/hero-1';
 import { Interactive3DRobot } from '@/components/blocks/interactive-3d-robot';
 import { SkillsSection } from '@/components/ui/skills-section';
 import { ProjectsSection } from '@/components/ui/projects-section';
+import { ContactSection } from '@/components/ui/contact-section';
 
 export default function Home() {
   return (
@@ -40,6 +41,7 @@ export default function Home() {
       </HeroLanding>
       <SkillsSection />
       <ProjectsSection />
+      <ContactSection />
     </>
   );
 }
