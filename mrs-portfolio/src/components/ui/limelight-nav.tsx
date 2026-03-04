@@ -66,7 +66,7 @@ export const LimelightNav = ({
             onClick={() => handleItemClick(index, onClick)}
             aria-label={label}
           >
-            {cloneElement(icon, {
+            {cloneElement(icon as any, {
               className: `w-4 h-4 transition-all duration-300 ease-in-out ${
                 activeIndex === index ? 'opacity-100 text-white' : 'opacity-50 text-zinc-400 hover:opacity-80'
               } ${icon.props.className || ''} ${iconClassName || ''}`,
