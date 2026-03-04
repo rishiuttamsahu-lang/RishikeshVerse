@@ -172,7 +172,7 @@ export default function RotatingEarth({ className = "" }: RotatingEarthProps) {
         landFeatures = await response.json()
         
         landFeatures.features.forEach((feature: any) => {
-          generateDotsInPolygon(feature, 24).forEach(([lng, lat]) => allDots.push({ lng, lat, visible: true }))
+          generateDotsInPolygon(feature, 24).forEach(([lng, lat]) => allDots.push({ lng, lat }))
         })
         
         render()
