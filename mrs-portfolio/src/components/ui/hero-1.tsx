@@ -142,7 +142,7 @@ export function HeroLanding({
         </header>
 
         {/* Main Content */}
-        <main className="container mx-auto px-4 py-12 lg:py-24">
+        <main id="about" className="container mx-auto px-4 py-12 lg:py-24">
           <div className="lg:grid lg:grid-cols-2 lg:gap-16 items-center">
             {/* Left Column - Text Content */}
             <div className="text-left">
@@ -151,6 +151,7 @@ export function HeroLanding({
                 <span className="text-white">{announcementBanner.text}</span>
                 {announcementBanner.link && (
                   <a
+                    target="_blank"
                     href={announcementBanner.link.href}
                     className="text-blue-400 hover:text-blue-300 transition-colors"
                   >

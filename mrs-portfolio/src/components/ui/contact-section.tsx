@@ -1,9 +1,11 @@
 "use client";
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Particles } from "./particles";
-import { Mail, MessageSquare, Send, User, Linkedin, Github, Instagram } from "lucide-react";
+import { Mail, Send, User } from "lucide-react";
 import { ContactTitleSlider } from "./dynamic-text-slider";
+import RotatingEarth from "./wireframe-dotted-globe";
+import { GlowCard } from "./spotlight-card";
+import { Particles } from "./particles";
 
 export function ContactSection() {
   const [formData, setFormData] = useState({
@@ -19,9 +21,10 @@ export function ContactSection() {
   };
 
   return (
+    // FIX 1: 'bg-black' ko restore kiya aur particles add kiye
     <section id="contact" className="relative w-full min-h-screen bg-black pt-32 pb-24 px-4 overflow-hidden">
       
-      {/* BACKGROUND PARTICLES */}
+      {/* LOCAL PARTICLES BACKGROUND RESTORED */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <Particles
           particleColors={["#9E00FF", "#ffffff", "#00D1FF"]}
@@ -34,52 +37,22 @@ export function ContactSection() {
       </div>
 
       <div className="max-w-6xl mx-auto relative z-10">
+        
         {/* NEW INTERACTIVE SLIDER TITLE */}
         <ContactTitleSlider />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left Side - Contact Info */}
+          
+          {/* Left Side - 3D Interactive Globe */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
-            className="space-y-8"
+            className="w-full h-full"
           >
-            <div className="bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-[32px]">
-              <h3 className="text-2xl font-bold text-white mb-6">Let's Connect!</h3>
-              
-              <div className="space-y-6">
-                <a href="mailto:hello@rishikesh.tech" className="flex items-center gap-4 text-gray-300 hover:text-purple-400 transition group">
-                  <div className="w-12 h-12 bg-purple-600/20 border border-purple-500/30 rounded-xl flex items-center justify-center group-hover:scale-110 transition">
-                    <Mail size={24} className="text-purple-400" />
-                  </div>
-                  <span className="text-lg">hello@rishikesh.tech</span>
-                </a>
-
-                <a href="#" className="flex items-center gap-4 text-gray-300 hover:text-cyan-400 transition group">
-                  <div className="w-12 h-12 bg-cyan-600/20 border border-cyan-500/30 rounded-xl flex items-center justify-center group-hover:scale-110 transition">
-                    <MessageSquare size={24} className="text-cyan-400" />
-                  </div>
-                  <span className="text-lg">Available for opportunities</span>
-                </a>
-              </div>
-
-              {/* Social Links */}
-              <div className="mt-10 pt-8 border-t border-white/10">
-                <h4 className="text-lg font-semibold text-white mb-4">Find me on</h4>
-                <div className="flex gap-4">
-                  <a href="#" className="w-12 h-12 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center hover:bg-purple-600/20 hover:border-purple-500/30 transition group">
-                    <Linkedin size={24} className="text-gray-400 group-hover:text-purple-400" />
-                  </a>
-                  <a href="#" className="w-12 h-12 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center hover:bg-purple-600/20 hover:border-purple-500/30 transition group">
-                    <Github size={24} className="text-gray-400 group-hover:text-purple-400" />
-                  </a>
-                  <a href="#" className="w-12 h-12 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center hover:bg-purple-600/20 hover:border-purple-500/30 transition group">
-                    <Instagram size={24} className="text-gray-400 group-hover:text-purple-400" />
-                  </a>
-                </div>
-              </div>
-            </div>
+            <GlowCard customSize={true} glowColor="purple" className="flex flex-col items-center justify-center p-8 min-h-[400px] lg:min-h-[500px] w-full h-full bg-black/40">
+              <RotatingEarth className="w-full h-full" />
+            </GlowCard>
           </motion.div>
 
           {/* Right Side - Contact Form */}
@@ -87,8 +60,10 @@ export function ContactSection() {
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
+            className="w-full h-full"
           >
-            <form onSubmit={handleSubmit} className="p-8 bg-white/5 backdrop-blur-md border border-white/10 rounded-[32px] space-y-6">
+            <GlowCard customSize={true} glowColor="cyan" className="p-8 w-full h-full bg-black/40 flex flex-col justify-center">
+              <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">Your Name</label>
                 <div className="relative">
@@ -131,14 +106,117 @@ export function ContactSection() {
                 />
               </div>
 
-              <button
-                type="submit"
-                className="w-full py-4 bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-500 hover:to-cyan-500 text-white font-bold rounded-xl transition-all duration-300 transform hover:scale-[1.02] flex items-center justify-center gap-2 shadow-lg shadow-purple-500/25"
-              >
-                <Send size={20} />
-                Send Message
-              </button>
+              {/* 🚀 NEW SCI-FI CROSSHAIR BUTTON 🚀 */}
+              <div className="relative w-full mt-8">
+                <style dangerouslySetInnerHTML={{ __html: `
+                  .sci-fi-button {
+                    position: relative;
+                    cursor: pointer;
+                    border: 1px solid rgba(255,255,255,0.1);
+                    width: 100%;
+                    height: 56px;
+                    background: #09090b;
+                    color: #fff;
+                    border-radius: 8px;
+                  }
+                  .sci-fi-text {
+                    position: relative;
+                    z-index: 1;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 8px;
+                    font-weight: bold;
+                  }
+                  .sci-fi-button::before {
+                    content: "";
+                    position: absolute;
+                    inset: 0;
+                    opacity: 0;
+                    background: radial-gradient(circle at 50% 50%, transparent 0, transparent 20%, rgba(17,17,17,0.66) 50%), radial-gradient(ellipse 100% 100%, #fff, transparent);
+                    background-size: 3px 3px, auto auto;
+                    transition: 0.3s;
+                    border-radius: 8px;
+                  }
+                  .sci-fi-button:hover::before {
+                    opacity: 0.3;
+                  }
+                  .sci-fi-a {
+                    pointer-events: none;
+                    position: absolute;
+                    --w: 2px;
+                    --t: -30px;
+                    --s: calc(var(--t) * -1);
+                    --e: calc(100% + var(--t));
+                    --g: transparent, rgba(255,255,255,0.2) var(--s), rgba(255,255,255,0.66) var(--s), #fff, rgba(255,255,255,0.66) var(--e), rgba(255,255,255,0.2) var(--e), transparent;
+                  }
+                  .sci-fi-a::before {
+                    content: "";
+                    position: absolute;
+                    inset: 0;
+                    background: inherit;
+                    filter: blur(4px) url(#unopaq);
+                    z-index: -2;
+                  }
+                  .sci-fi-a::after {
+                    content: "";
+                    position: absolute;
+                    inset: 0;
+                    background: inherit;
+                    filter: blur(10px) url(#unopaq);
+                    opacity: 0;
+                    z-index: -2;
+                    transition: 0.3s;
+                  }
+                  .sci-fi-button:hover .sci-fi-a::after {
+                    opacity: 1;
+                  }
+                  .sci-fi-l { left: -2px; }
+                  .sci-fi-r { right: -2px; }
+                  .sci-fi-l, .sci-fi-r {
+                    background: linear-gradient(var(--g));
+                    top: var(--t);
+                    bottom: var(--t);
+                    width: var(--w);
+                  }
+                  .sci-fi-t { top: -2px; }
+                  .sci-fi-b { bottom: -2px; }
+                  .sci-fi-t, .sci-fi-b {
+                    background: linear-gradient(90deg, var(--g));
+                    left: var(--t);
+                    right: var(--t);
+                    height: var(--w);
+                  }
+                  .sci-fi-backdrop {
+                    position: absolute;
+                    inset: -30px;
+                    background: radial-gradient(circle at 50% 50%, transparent 0, transparent 20%, rgba(17,17,17,0.66) 50%);
+                    background-size: 3px 3px;
+                    z-index: -1;
+                    pointer-events: none;
+                  }
+                `}} />
+
+                <svg style={{ position: "absolute", width: 0, height: 0 }}>
+                  <filter width="3000%" x="-1000%" height="3000%" y="-1000%" id="unopaq">
+                    <feColorMatrix values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 3 0" />
+                  </filter>
+                </svg>
+
+                <div className="sci-fi-backdrop"></div>
+                
+                <button type="submit" className="sci-fi-button">
+                  <div className="sci-fi-a sci-fi-l"></div>
+                  <div className="sci-fi-a sci-fi-r"></div>
+                  <div className="sci-fi-a sci-fi-t"></div>
+                  <div className="sci-fi-a sci-fi-b"></div>
+                  <div className="sci-fi-text">
+                    <Send size={18} /> Send Message
+                  </div>
+                </button>
+              </div>
             </form>
+            </GlowCard>
           </motion.div>
         </div>
       </div>

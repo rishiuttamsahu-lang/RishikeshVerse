@@ -7,10 +7,10 @@ import { ContactSection } from '@/components/ui/contact-section';
 
 export default function Home() {
   return (
-    <>
+    <main className="min-h-screen bg-black">
       <HeroLanding
         navigationItems={[
-          { name: 'About', href: '#' },
+          { name: 'About', href: '#about' },
           { name: 'Skills', href: '#skills' },
           { name: 'Projects', href: '#projects' },
           { name: 'Contact', href: '#contact' }
@@ -19,7 +19,7 @@ export default function Home() {
           text: "🚀 Currently building the",
           link: {
             text: "Study Hub Platform",
-            href: "#projects"
+            href: "https://fycs-study-hub.vercel.app/"
           }
         }}
         title="Hi, I'm Rishikesh. Welcome to my 3D Universe."
@@ -42,6 +42,6 @@ export default function Home() {
       <SkillsSection />
       <ProjectsSection />
       <ContactSection />
-    </>
+    </main>
   );
 }

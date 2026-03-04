@@ -59,10 +59,10 @@ export function ProjectsSection() {
               </div>
               
               <div className="flex gap-4 border-t border-white/5 pt-6">
-                <a href={project.link} className="flex items-center gap-2 text-white bg-purple-600/20 border border-purple-500/30 px-4 py-2 rounded-lg hover:bg-purple-600/40 transition text-sm">
+                <a target="_blank" href={project.link} className="flex items-center gap-2 text-white bg-purple-600/20 border border-purple-500/30 px-4 py-2 rounded-lg hover:bg-purple-600/40 transition text-sm">
                   <ExternalLink size={16} /> Live Demo
                 </a>
-                <a href={project.github} className="flex items-center gap-2 text-gray-400 hover:text-white transition px-4 py-2 text-sm">
+                <a target="_blank" href={project.github} className="flex items-center gap-2 text-gray-400 hover:text-white transition px-4 py-2 text-sm">
                   <Github size={16} /> Source
                 </a>
               </div>
