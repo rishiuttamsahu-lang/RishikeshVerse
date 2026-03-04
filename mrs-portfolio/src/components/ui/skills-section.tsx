@@ -15,12 +15,16 @@ const skills = [
 
 export function SkillsSection() {
   const targetRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: targetRef, offset: ["start start", "end end"] });
+  
+  const { scrollYProgress } = useScroll({ 
+    target: targetRef, 
+    offset: ["start start", "end end"] 
+  });
 
-  const x = useTransform(scrollYProgress, [0.05, 1], ["100vw", "-65%"]);
+  const x = useTransform(scrollYProgress, [0, 1], ["75vw", "-70%"]);
 
   return (
-    <section ref={targetRef} id="skills" className="relative h-[400vh] bg-black">
+    <section ref={targetRef} id="skills" className="relative h-[300vh] bg-black -mt-16">
         
       <Spotlight
         className="from-purple-800 via-purple-600 to-purple-400 blur-2xl dark:from-purple-900 dark:via-purple-500 dark:to-purple-900 opacity-50"
@@ -47,16 +51,16 @@ export function SkillsSection() {
         </svg>
       </div>
 
-      <div className="sticky top-0 flex h-screen items-center overflow-hidden">
+      <div className="sticky top-0 flex flex-col justify-center h-screen overflow-hidden pt-20">
         
-        <div className="absolute top-24 left-0 w-full text-center z-20 pointer-events-none">
+        <div className="w-full text-center z-20 pointer-events-none mb-10 mt-10">
           <h2 className="text-4xl md:text-6xl font-black text-white mb-4 tracking-tight">
             Rishikesh<span className="text-[#9E00FF]">Verse</span> Skills
           </h2>
           <p className="text-gray-400 text-lg">Scroll to explore my cosmic tech stack</p>
         </div>
 
-        <motion.div style={{ x }} className="flex gap-12 z-10 w-max pr-[10vw] items-center">
+        <motion.div style={{ x }} className="flex gap-12 z-10 w-max pr-[10vw] items-center mb-20">
           {skills.map((skill) => (
             <div key={skill.name} className="flex-shrink-0">
               <GlowingShadow>

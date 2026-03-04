@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react"
 import { motion } from "framer-motion"
-import Link from "next/link"
 import { LucideIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -31,6 +30,52 @@ export function NavBar({ items, className }: NavBarProps) {
     return () => window.removeEventListener("resize", handleResize)
   }, [])
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + window.innerHeight / 3;
+      const isAtBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 50;
+
+      if (isAtBottom) {
+        setActiveTab(items[items.length - 1].name);
+        return;
+      }
+
+      let currentActive = items[0].name;
+      
+      for (let i = items.length - 1; i >= 0; i--) {
+        const item = items[i];
+        if (item.url !== '#') {
+          const el = document.querySelector(item.url) as HTMLElement;
+          if (el && el.offsetTop <= scrollPosition) {
+            currentActive = item.name;
+            break;
+          }
+        }
+      }
+      
+      setActiveTab(currentActive);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [items]);
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, item: NavItem) => {
+    e.preventDefault();
+    setActiveTab(item.name);
+    
+    if (item.url === '#') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      const el = document.querySelector(item.url);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
+
   return (
     <div
       className={cn(
@@ -44,10 +89,10 @@ export function NavBar({ items, className }: NavBarProps) {
           const isActive = activeTab === item.name
 
           return (
-            <Link
+            <a
               key={item.name}
               href={item.url}
-              onClick={() => setActiveTab(item.name)}
+              onClick={(e) => handleNavClick(e, item)}
               className={cn(
                 "relative cursor-pointer text-sm font-semibold px-6 py-2 rounded-full transition-colors",
                 "text-white/60 hover:text-white",
@@ -76,7 +121,7 @@ export function NavBar({ items, className }: NavBarProps) {
                   </div>
                 </motion.div>
               )}
-            </Link>
+            </a>
           )
         })}
       </div>

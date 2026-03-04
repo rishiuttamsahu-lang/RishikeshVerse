@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useRef, useLayoutEffect, cloneElement } from 'react';
+import React, { useState, useRef, useLayoutEffect, useEffect, cloneElement } from 'react';
 
 type NavItem = {
   id: string | number;
@@ -7,6 +7,7 @@ type NavItem = {
   label?: string;
   onClick?: () => void;
   href?: string;
+  url?: string;
 };
 
 type LimelightNavProps = {
@@ -32,6 +33,8 @@ export const LimelightNav = ({
   const [isReady, setIsReady] = useState(false);
   const navItemRefs = useRef<(HTMLAnchorElement | null)[]>([]);
   const limelightRef = useRef<HTMLDivElement | null>(null);
+  const isClickScrolling = useRef(false);
+  const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
 
   useLayoutEffect(() => {
     if (items.length === 0) return;
@@ -47,23 +50,98 @@ export const LimelightNav = ({
     }
   }, [activeIndex, isReady, items]);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (isClickScrolling.current) return;
+
+      let currentActiveIndex = activeIndex;
+      const scrollPosition = window.scrollY + window.innerHeight / 3;
+
+      for (let i = items.length - 1; i >= 0; i--) {
+        const item = items[i];
+        const targetUrl = item.href || item.url || '#';
+        
+        if (targetUrl !== '#' && targetUrl.startsWith('#')) {
+          const section = document.getElementById(targetUrl.substring(1));
+          if (section) {
+            const sectionTop = section.offsetTop;
+            if (scrollPosition >= sectionTop) {
+              currentActiveIndex = i;
+              break;
+            }
+          }
+        }
+      }
+
+      if (window.scrollY < 100) {
+        currentActiveIndex = 0;
+      }
+
+      if (currentActiveIndex !== activeIndex) {
+        setActiveIndex(currentActiveIndex);
+        onTabChange?.(currentActiveIndex);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [activeIndex, items, onTabChange]);
+
   if (items.length === 0) return null; 
 
-  const handleItemClick = (index: number, itemOnClick?: () => void) => {
+  const handleItemClick = (index: number, e: React.MouseEvent<HTMLAnchorElement>, itemOnClick?: () => void, targetUrl?: string, label?: string) => {
+    e.preventDefault();
+    
+    if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
+    
+    isClickScrolling.current = true;
     setActiveIndex(index);
     onTabChange?.(index);
     itemOnClick?.();
+
+    const normalizedLabel = label?.toLowerCase() || '';
+    const isTopTarget = targetUrl === '#' || targetUrl === '#about' || targetUrl === '#home' || normalizedLabel === 'about' || normalizedLabel === 'home';
+
+    const forceScrollToTop = () => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+      document.documentElement.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+      const mainEl = document.querySelector('main');
+      if (mainEl) mainEl.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+      document.body.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+
+    if (isTopTarget) {
+      forceScrollToTop();
+    } else if (targetUrl && targetUrl.startsWith('#')) {
+      const element = document.getElementById(targetUrl.substring(1));
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        forceScrollToTop();
+      }
+    } else {
+      forceScrollToTop();
+    }
+
+    scrollTimeout.current = setTimeout(() => {
+      isClickScrolling.current = false;
+    }, 1200);
   };
 
   return (
     <nav className={`relative inline-flex items-center h-14 rounded-full bg-zinc-900/50 backdrop-blur-md border border-white/10 px-2 shadow-2xl ${className}`}>
-      {items.map(({ id, icon, label, onClick, href }, index) => (
+      {items.map(({ id, icon, label, onClick, href, url }, index) => {
+        const targetUrl = href || url || '#';
+        
+        return (
           <a
             key={id}
-            href={href || '#'}
+            href={targetUrl}
             ref={(el) => { navItemRefs.current[index] = el; }}
             className={`relative z-20 flex h-full cursor-pointer items-center justify-center px-4 py-2 gap-2 ${iconContainerClassName}`}
-            onClick={() => handleItemClick(index, onClick)}
+            onClick={(e) => handleItemClick(index, e, onClick, targetUrl, label)}
             aria-label={label}
           >
             {cloneElement(icon as any, {
@@ -79,7 +157,8 @@ export const LimelightNav = ({
               </span>
             )}
           </a>
-      ))}
+        );
+      })}
 
       <div 
         ref={limelightRef}
