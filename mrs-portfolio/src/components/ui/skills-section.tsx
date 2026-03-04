@@ -24,7 +24,7 @@ export function SkillsSection() {
   const x = useTransform(scrollYProgress, [0, 1], ["75vw", "-70%"]);
 
   return (
-    <section ref={targetRef} id="skills" className="relative h-[300vh] bg-black -mt-16">
+    <section ref={targetRef} id="skills" className="relative h-[250vh] bg-black -mt-16">
         
       <Spotlight
         className="from-purple-800 via-purple-600 to-purple-400 blur-2xl dark:from-purple-900 dark:via-purple-500 dark:to-purple-900 opacity-50"
