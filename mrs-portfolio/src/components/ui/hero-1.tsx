@@ -69,7 +69,7 @@ export function HeroLanding({
       // Primary -> Explore Projects -> ShinyButton
       return (
         <a key={index} href={cta.href} className="inline-block">
-          <ShinyButton className="w-44">
+          <ShinyButton className="w-full sm:w-44">
             {cta.text}
           </ShinyButton>
         </a>
@@ -78,7 +78,7 @@ export function HeroLanding({
       // Secondary -> Contact Me -> InteractiveHoverButton
       return (
         <a key={index} href={cta.href} className="inline-block">
-          <InteractiveHoverButton text={cta.text} className="w-40 h-[50px]" />
+          <InteractiveHoverButton text={cta.text} className="w-full sm:w-40 h-[50px]" />
         </a>
       )
     }
@@ -178,16 +178,15 @@ export function HeroLanding({
               </div>
             </div>
 
-            {/* Right Column - 3D Robot Component */}
-            <div className="mt-12 lg:mt-0">
+            {/* Right Column - 3D Robot Component (HIDDEN ON MOBILE FOR PERFORMANCE) */}
+            <div className="hidden lg:block lg:mt-0">
               <div className="w-full h-96 lg:h-[500px] rounded-xl bg-zinc-900/30 backdrop-blur-sm border border-zinc-800 flex items-center justify-center overflow-hidden">
                 {children ? (
                   children
                 ) : (
                   <div className="text-gray-400 text-center">
                     <div className="text-4xl mb-2">🤖</div>
-                    <p>3D Robot Component</p>
-                    <p className="text-sm mt-1">Will be rendered here</p>
+                    <p>3D Robot</p>
                   </div>
                 )}
               </div>

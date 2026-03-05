@@ -4,6 +4,40 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* GLOBAL DARK THEME */
+html, body {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+/* STRICTLY MOBILE ONLY: Prevent zoom-out whitespace */
+@media (max-width: 768px) {
+  html, body {
+    overflow-x: hidden;
+    width: 100vw;
+  }
+}
+
+/* MOVING DOT ANIMATION */
+@keyframes moveDot {
+  0%, 100% {
+    top: 0%;
+    right: 0%;
+  }
+  25% {
+    top: 0%;
+    right: calc(100% - 35px);
+  }
+  50% {
+    top: calc(100% - 30px);
+    right: calc(100% - 35px);
+  }
+  75% {
+    top: calc(100% - 30px);
+    right: 0%;
+  }
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

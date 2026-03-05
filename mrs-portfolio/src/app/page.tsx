@@ -7,7 +7,7 @@ import { ContactSection } from '@/components/ui/contact-section';
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-black">
+    <main className="relative w-full min-h-screen bg-black">
       <HeroLanding
         navigationItems={[
           { name: 'About', href: '#about' },
