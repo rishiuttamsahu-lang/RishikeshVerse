@@ -240,3 +240,10 @@ a[href*="spline.design"] {
   pointer-events: none !important;
   visibility: hidden !important;
 }
+
+/* Override SVG colors to white */
+svg.lucide-file-code-corner,
+svg[class*="lucide"] {
+  color: #ffffff !important;
+  fill: none !important;
+}
