@@ -1,14 +1,13 @@
 'use client';
 
-import { useState } from 'react';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import React, { useState, Fragment } from 'react';
 import { ShimmerButton } from '@/components/ui/shimmer-button';
 import { NavBar } from '@/components/ui/tubelight-navbar';
 import { ShinyButton } from '@/components/ui/shiny-button';
 import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button';
 import { ShootingStars } from '@/components/ui/shooting-stars';
 import { AnimatedText } from '@/components/ui/animated-underline-text-one';
-import { User, Code, Briefcase, Mail, Menu, X } from 'lucide-react';
+import { User, Code, Briefcase, Mail, Menu } from 'lucide-react';
 
 interface NavigationItem {
   name: string;
@@ -56,6 +55,7 @@ export function HeroLanding({
   children,
 }: HeroLandingProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeNav, setActiveNav] = useState(0);
 
   const navItems = [
     { name: 'About', url: '#about', icon: User },
@@ -63,6 +63,14 @@ export function HeroLanding({
     { name: 'Projects', url: '#projects', icon: Briefcase },
     { name: 'Contact', url: '#contact', icon: Mail }
   ];
+
+  const handleNavClick = (index: number, href: string) => {
+    setActiveNav(index);
+    setTimeout(() => {
+      setMobileMenuOpen(false);
+      window.location.href = href;
+    }, 300);
+  };
 
   const renderCallToAction = (cta: CallToAction, index: number) => {
     if (cta.variant === 'primary') {
@@ -142,7 +150,7 @@ export function HeroLanding({
         </header>
 
         {/* Main Content */}
-        <main id="about" className="container mx-auto px-4 py-12 lg:py-24">
+        <main id="about" className="container mx-auto px-4 pt-32 pb-12 lg:py-24">
           <div className="lg:grid lg:grid-cols-2 lg:gap-16 items-center">
             {/* Left Column - Text Content */}
             <div className="text-left">
@@ -195,34 +203,127 @@ export function HeroLanding({
         </main>
       </div>
 
-      {/* Mobile Menu Dialog */}
-      <Dialog open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-        <DialogContent className="bg-black border-zinc-800 p-0">
-          <div className="p-6">
-            <div className="flex items-center justify-between mb-6">
-              <div className="text-xl font-bold">Menu</div>
-              <button
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-white"
-              >
-                <X className="h-6 w-6" />
-              </button>
-            </div>
-            <div className="space-y-4">
-              {navigationItems.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  className="block text-lg text-gray-300 hover:text-white transition-colors py-2"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
+      {/* Mobile Menu Overlay with Glider UI */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-[100000] bg-black/95 backdrop-blur-sm md:hidden">
+          <style>{`
+            .radio-container {
+              --main-color:rgb(255, 217, 0);
+              --main-color-opacity: #9E00FF1c;
+              --total-radio: ${navItems.length};
+              display: flex;
+              flex-direction: column;
+              position: relative;
+              padding-left: 0.5rem;
+              height: 100vh;
+              justify-content: center;
+            }
+            .radio-container input {
+              cursor: pointer;
+              appearance: none;
+              display: none;
+            }
+            .radio-container .glider-container {
+              position: absolute;
+              left: 0;
+              top: 0;
+              bottom: 0;
+              background: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(27, 27, 27, 1) 50%, rgba(0, 0, 0, 0) 100%);
+              width: 2px;
+            }
+            .radio-container .glider-container .glider {
+              position: relative;
+              height: calc(100% / var(--total-radio));
+              width: 100%;
+              background: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, var(--main-color) 50%, rgba(0, 0, 0, 0) 100%);
+              transition: transform 0.5s cubic-bezier(0.37, 1.95, 0.66, 0.56);
+            }
+            .radio-container .glider-container .glider::before {
+              content: "";
+              position: absolute;
+              height: 60%;
+              width: 300%;
+              top: 50%;
+              transform: translateY(-50%);
+              background: var(--main-color);
+              filter: blur(10px);
+            }
+            .radio-container .glider-container .glider::after {
+              content: "";
+              position: absolute;
+              left: 0;
+              height: 100%;
+              width: 150px;
+              background: linear-gradient(90deg, var(--main-color-opacity) 0%, rgba(0, 0, 0, 0) 100%);
+            }
+            .radio-container label {
+              cursor: pointer;
+              padding: 1.5rem 1rem;
+              position: relative;
+              color: grey;
+              transition: all 0.3s ease-in-out;
+              display: flex;
+              align-items: center;
+              gap: 12px;
+              font-size: 1.25rem;
+              font-weight: 500;
+            }
+            .radio-container input:checked + label {
+              color: white;
+            }
+            .radio-container input:nth-of-type(1):checked ~ .glider-container .glider {
+              transform: translateY(0);
+            }
+            .radio-container input:nth-of-type(2):checked ~ .glider-container .glider {
+              transform: translateY(100%);
+            }
+            .radio-container input:nth-of-type(3):checked ~ .glider-container .glider {
+              transform: translateY(200%);
+            }
+            .radio-container input:nth-of-type(4):checked ~ .glider-container .glider {
+              transform: translateY(300%);
+            }
+            .close-btn {
+              position: absolute;
+              top: 1.5rem;
+              right: 1.5rem;
+              background: transparent;
+              border: none;
+              color: white;
+              cursor: pointer;
+              z-index: 10;
+            }
+          `}</style>
+          
+          <button
+            className="close-btn"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <Menu className="h-8 w-8 rotate-45" />
+          </button>
+
+          <div className="radio-container">
+            {navItems.map((item, index) => (
+              <Fragment key={item.name}>
+                <input
+                  type="radio"
+                  name="radio"
+                  id={`radio-${item.name.toLowerCase()}`}
+                  checked={activeNav === index}
+                  onChange={() => handleNavClick(index, item.url)}
+                />
+                <label htmlFor={`radio-${item.name.toLowerCase()}`}>
+                  <item.icon className="h-6 w-6" />
                   {item.name}
-                </a>
-              ))}
+                </label>
+              </Fragment>
+            ))}
+            <div className="glider-container">
+              <div className="glider"></div>
             </div>
           </div>
-        </DialogContent>
-      </Dialog>
+        </div>
+      )}
     </div>
   );
 }
