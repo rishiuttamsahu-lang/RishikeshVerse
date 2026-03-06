@@ -4,6 +4,7 @@ import { Interactive3DRobot } from '@/components/blocks/interactive-3d-robot';
 import { SkillsSection } from '@/components/ui/skills-section';
 import { ProjectsSection } from '@/components/ui/projects-section';
 import { ContactSection } from '@/components/ui/contact-section';
+import OrbitingSocials from '@/components/ui/orbiting-socials';
 
 export default function Home() {
   return (
@@ -42,6 +43,7 @@ export default function Home() {
       <SkillsSection />
       <ProjectsSection />
       <ContactSection />
+      <OrbitingSocials />
     </main>
   );
 }

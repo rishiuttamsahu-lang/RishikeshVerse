@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Mail, Send, User } from "lucide-react";
+import { Mail, Send, User, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
 import { ContactTitleSlider } from "./dynamic-text-slider";
 import RotatingEarth from "./wireframe-dotted-globe";
 import { GlowCard } from "./spotlight-card";
@@ -15,9 +15,42 @@ export function ContactSection() {
     message: ""
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: "6d803096-1eb1-46a5-b77a-75dbf9357bf6", 
+          ...formData
+        }),
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        setSubmitStatus('success');
+        setFormData({ name: "", email: "", message: "" });
+      } else {
+        setSubmitStatus('error');
+      }
+    } catch (error) {
+      console.error(error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+      // Reset status message after 5 seconds
+      setTimeout(() => setSubmitStatus('idle'), 5000);
+    }
   };
 
   const formContent = (
@@ -34,7 +67,7 @@ export function ContactSection() {
           .uiverse-input { background: transparent; box-shadow: none; }
         }
 
-        /* 🔥 EXACT BUTTON CSS PROVDED BY YOU 🔥 */
+        /* 🔥 EXACT ORIGINAL BUTTON CSS 🔥 */
         .button {
           position: relative;
           cursor: pointer;
@@ -45,6 +78,8 @@ export function ContactSection() {
           color: #fff;
           border-radius: 8px; 
         }
+
+        .button:disabled { opacity: 0.7; cursor: not-allowed; }
 
         .text {
           position: relative;
@@ -76,7 +111,7 @@ export function ContactSection() {
           border-radius: 8px;
         }
 
-        .button:hover::before, .button:active::before {
+        .button:hover:not(:disabled)::before, .button:active:not(:disabled)::before {
           opacity: 0.3;
         }
 
@@ -111,7 +146,7 @@ export function ContactSection() {
           transition: 0.3s;
         }
 
-        .button:hover .a::after, .button:active .a::after {
+        .button:hover:not(:disabled) .a::after, .button:active:not(:disabled) .a::after {
           opacity: 1;
         }
 
@@ -171,7 +206,19 @@ export function ContactSection() {
         </div>
       </div>
 
-      {/* 🔥 EXACT BUTTON HTML PROVDED BY YOU 🔥 */}
+      {/* Status Messages */}
+      {submitStatus === 'success' && (
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-2 text-green-400 text-sm mt-4 bg-green-400/10 p-3 rounded-lg border border-green-400/20">
+          <CheckCircle size={18} /> Message sent successfully! I'll get back to you soon.
+        </motion.div>
+      )}
+      {submitStatus === 'error' && (
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-2 text-red-400 text-sm mt-4 bg-red-400/10 p-3 rounded-lg border border-red-400/20">
+          <AlertCircle size={18} /> Something went wrong. Please try again.
+        </motion.div>
+      )}
+
+      {/* 🔥 EXACT ORIGINAL BUTTON HTML 🔥 */}
       <div className="relative w-full mt-8">
         <svg style={{ position: "absolute", width: 0, height: 0 }}>
           <filter width="3000%" x="-1000%" height="3000%" y="-1000%" id="unopaq">
@@ -185,13 +232,17 @@ export function ContactSection() {
         </svg>
 
         <div className="backdrop"></div>
-        <button type="submit" className="button">
+        <button type="submit" className="button" disabled={isSubmitting}>
           <div className="a l"></div>
           <div className="a r"></div>
           <div className="a t"></div>
           <div className="a b"></div>
           <div className="text">
-            <Send size={18} /> Send Message
+            {isSubmitting ? (
+              <><Loader2 size={18} className="animate-spin" /> Transmitting...</>
+            ) : (
+              <><Send size={18} /> Send Message</>
+            )}
           </div>
         </button>
       </div>
