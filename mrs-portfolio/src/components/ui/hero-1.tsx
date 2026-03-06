@@ -208,8 +208,8 @@ export function HeroLanding({
         <style dangerouslySetInnerHTML={{
           __html: `
           .radio-container {
-            --main-color: #f7e479;
-            --main-color-opacity: #f7e4791c;
+            --main-color: #fafafa;
+            --main-color-opacity: #ffffff1c;
             --total-radio: 4;
             display: flex;
             flex-direction: column;
