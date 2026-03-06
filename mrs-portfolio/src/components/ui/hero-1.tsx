@@ -55,7 +55,7 @@ export function HeroLanding({
   children,
 }: HeroLandingProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeNav, setActiveNav] = useState(0);
+  const [activeNav, setActiveNav] = useState('About');
 
   const navItems = [
     { name: 'About', url: '#about', icon: User },
@@ -64,12 +64,12 @@ export function HeroLanding({
     { name: 'Contact', url: '#contact', icon: Mail }
   ];
 
-  const handleNavClick = (index: number, href: string) => {
-    setActiveNav(index);
+  const handleNavClick = (itemName: string, url: string) => {
+    setActiveNav(itemName);
     setTimeout(() => {
       setMobileMenuOpen(false);
-      window.location.href = href;
-    }, 300);
+      window.location.hash = url;
+    }, 300); // 300ms delay for glider animation
   };
 
   const renderCallToAction = (cta: CallToAction, index: number) => {
@@ -94,7 +94,7 @@ export function HeroLanding({
 
   return (
     <div className={`min-h-screen w-full overflow-hidden relative bg-black !z-[99999] ${className || ''}`}>
-      
+
       {/* Background Layer */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.15)_0%,rgba(0,0,0,0)_80%)]" />
@@ -133,12 +133,12 @@ export function HeroLanding({
           <nav className="flex items-center justify-between">
             {/* Logo */}
             <div className="text-2xl font-bold pointer-events-auto">Logo</div>
-        
+
             {/* Desktop Navigation */}
             <div className="hidden lg:flex lg:flex-1 lg:justify-center pointer-events-auto">
               <NavBar items={navItems} />
             </div>
-        
+
             {/* Mobile Menu Button */}
             <button
               className="md:hidden text-white pointer-events-auto"
@@ -203,127 +203,73 @@ export function HeroLanding({
         </main>
       </div>
 
-      {/* Mobile Menu Overlay with Glider UI */}
-      {mobileMenuOpen && (
-        <div className="fixed inset-0 z-[100000] bg-black/95 backdrop-blur-sm md:hidden">
-          <style>{`
-            .radio-container {
-              --main-color:rgb(255, 217, 0);
-              --main-color-opacity: #9E00FF1c;
-              --total-radio: ${navItems.length};
-              display: flex;
-              flex-direction: column;
-              position: relative;
-              padding-left: 0.5rem;
-              height: 100vh;
-              justify-content: center;
-            }
-            .radio-container input {
-              cursor: pointer;
-              appearance: none;
-              display: none;
-            }
-            .radio-container .glider-container {
-              position: absolute;
-              left: 0;
-              top: 0;
-              bottom: 0;
-              background: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(27, 27, 27, 1) 50%, rgba(0, 0, 0, 0) 100%);
-              width: 2px;
-            }
-            .radio-container .glider-container .glider {
-              position: relative;
-              height: calc(100% / var(--total-radio));
-              width: 100%;
-              background: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, var(--main-color) 50%, rgba(0, 0, 0, 0) 100%);
-              transition: transform 0.5s cubic-bezier(0.37, 1.95, 0.66, 0.56);
-            }
-            .radio-container .glider-container .glider::before {
-              content: "";
-              position: absolute;
-              height: 60%;
-              width: 300%;
-              top: 50%;
-              transform: translateY(-50%);
-              background: var(--main-color);
-              filter: blur(10px);
-            }
-            .radio-container .glider-container .glider::after {
-              content: "";
-              position: absolute;
-              left: 0;
-              height: 100%;
-              width: 150px;
-              background: linear-gradient(90deg, var(--main-color-opacity) 0%, rgba(0, 0, 0, 0) 100%);
-            }
-            .radio-container label {
-              cursor: pointer;
-              padding: 1.5rem 1rem;
-              position: relative;
-              color: grey;
-              transition: all 0.3s ease-in-out;
-              display: flex;
-              align-items: center;
-              gap: 12px;
-              font-size: 1.25rem;
-              font-weight: 500;
-            }
-            .radio-container input:checked + label {
-              color: white;
-            }
-            .radio-container input:nth-of-type(1):checked ~ .glider-container .glider {
-              transform: translateY(0);
-            }
-            .radio-container input:nth-of-type(2):checked ~ .glider-container .glider {
-              transform: translateY(100%);
-            }
-            .radio-container input:nth-of-type(3):checked ~ .glider-container .glider {
-              transform: translateY(200%);
-            }
-            .radio-container input:nth-of-type(4):checked ~ .glider-container .glider {
-              transform: translateY(300%);
-            }
-            .close-btn {
-              position: absolute;
-              top: 1.5rem;
-              right: 1.5rem;
-              background: transparent;
-              border: none;
-              color: white;
-              cursor: pointer;
-              z-index: 10;
-            }
-          `}</style>
-          
-          <button
-            className="close-btn"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <Menu className="h-8 w-8 rotate-45" />
-          </button>
+      {/* 🚀 CUSTOM FULL-SCREEN MOBILE OVERLAY WITH GLIDER 🚀 */}
+      <div className={`fixed inset-0 z-[100000] bg-black/90 backdrop-blur-md transition-opacity duration-300 md:hidden flex items-center justify-center ${mobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+        <style dangerouslySetInnerHTML={{
+          __html: `
+          .radio-container {
+            --main-color: #f7e479;
+            --main-color-opacity: #f7e4791c;
+            --total-radio: 4;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding-left: 0.5rem;
+            width: 250px;
+          }
+          .radio-container input { cursor: pointer; appearance: none; display: none; }
+          .radio-container .glider-container {
+            position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+            background: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(27, 27, 27, 1) 50%, rgba(0, 0, 0, 0) 100%);
+          }
+          .radio-container .glider-container .glider {
+            position: relative; height: calc(100% / var(--total-radio)); width: 100%;
+            background: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, var(--main-color) 50%, rgba(0, 0, 0, 0) 100%);
+            transition: transform 0.4s cubic-bezier(0.37, 1.95, 0.66, 0.56);
+          }
+          .radio-container .glider-container .glider::before {
+            content: ""; position: absolute; height: 60%; width: 300%; top: 50%; transform: translateY(-50%);
+            background: var(--main-color); filter: blur(10px);
+          }
+          .radio-container .glider-container .glider::after {
+            content: ""; position: absolute; left: 0; height: 100%; width: 150px;
+            background: linear-gradient(90deg, var(--main-color-opacity) 0%, rgba(0, 0, 0, 0) 100%);
+          }
+          .radio-container label {
+            cursor: pointer; padding: 1.5rem 1rem; position: relative; color: grey;
+            transition: all 0.3s ease-in-out; display: flex; align-items: center; gap: 12px; font-size: 1.25rem; font-weight: 500;
+          }
+          .radio-container input:checked + label { color: white; }
+          .radio-container input:nth-of-type(1):checked ~ .glider-container .glider { transform: translateY(0); }
+          .radio-container input:nth-of-type(2):checked ~ .glider-container .glider { transform: translateY(100%); }
+          .radio-container input:nth-of-type(3):checked ~ .glider-container .glider { transform: translateY(200%); }
+          .radio-container input:nth-of-type(4):checked ~ .glider-container .glider { transform: translateY(300%); }
+        `}} />
 
-          <div className="radio-container">
-            {navItems.map((item, index) => (
+        <div className="radio-container">
+          {navItems.map((item) => {
+            const isChecked = activeNav === item.name;
+            return (
               <Fragment key={item.name}>
                 <input
                   type="radio"
-                  name="radio"
-                  id={`radio-${item.name.toLowerCase()}`}
-                  checked={activeNav === index}
-                  onChange={() => handleNavClick(index, item.url)}
+                  id={`radio-${item.name}`}
+                  name="mobile-nav-radio"
+                  checked={isChecked}
+                  onChange={() => handleNavClick(item.name, item.url)}
                 />
-                <label htmlFor={`radio-${item.name.toLowerCase()}`}>
-                  <item.icon className="h-6 w-6" />
+                <label htmlFor={`radio-${item.name}`}>
+                  <item.icon className={`h-6 w-6 transition-colors duration-300 ${isChecked ? 'text-[#9E00FF]' : 'text-gray-500'}`} />
                   {item.name}
                 </label>
               </Fragment>
-            ))}
-            <div className="glider-container">
-              <div className="glider"></div>
-            </div>
+            )
+          })}
+          <div className="glider-container">
+            <div className="glider"></div>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }
